@@ -21,12 +21,13 @@ svg:active{cursor:grabbing}
 .slider-row{display:flex;align-items:center;gap:10px}
 .slider-row .lbl{font-size:0.65rem;text-transform:uppercase;letter-spacing:.06em;color:#777;white-space:nowrap}
 .slider-wrap{position:relative;flex:1;height:24px;display:flex;align-items:center}
-#slider{width:100%;accent-color:#e413c8;height:6px;cursor:pointer}
+#slider{width:100%;accent-color:#e413c8;height:28px;cursor:pointer;touch-action:pan-x}
 #mark240{position:absolute;top:0;height:100%;width:3px;background:#f59e0b;border-radius:2px;pointer-events:none;transform:translateX(-50%)}
 #mark240::after{content:'240';position:absolute;top:-18px;left:50%;transform:translateX(-50%);font-size:.6rem;color:#f59e0b;white-space:nowrap;font-weight:700}
 .target-pill{background:#f59e0b22;border:1px solid #f59e0b88;color:#f59e0b;font-size:.7rem;padding:2px 8px;border-radius:99px;white-space:nowrap}
 .btn{background:#1e1e3a;border:1px solid #3a3a6a;color:#aaa;font-size:.75rem;padding:5px 10px;border-radius:6px;cursor:pointer;white-space:nowrap}
 .btn:hover{background:#2a2a5a;color:#ddd}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap}
 @media(min-width:640px){
   #panel{flex-direction:row;align-items:center;gap:16px}
   .slider-row{flex:1}
@@ -40,6 +41,12 @@ svg:active{cursor:grabbing}
 </svg>
 </div>
 <div id="panel">
+  <div class="slider-row">
+    <div class="slider-wrap">
+      <input type="range" id="slider" min="0" step="0.01" value="0">
+      <div id="mark240"></div>
+    </div>
+  </div>
   <div class="top-row">
     <div class="metric">
       <span class="lbl">Surface AB30</span>
@@ -55,16 +62,11 @@ svg:active{cursor:grabbing}
       <span class="val" id="vRest">— m</span>
     </div>
     <span class="target-pill" id="pill240">240 m² op — m</span>
+  </div>
+  <div class="btn-row">
     <button class="btn" id="btnFit">⊡ Vue complète</button>
     <button class="btn" id="btnAB30">⊡ AB30</button>
     <button class="btn" id="btnConv">⊡ Intersection des limites</button>
-  </div>
-  <div class="slider-row">
-    <span class="lbl">I ←→ façade L-G</span>
-    <div class="slider-wrap">
-      <input type="range" id="slider" min="0" step="0.01" value="0">
-      <div id="mark240"></div>
-    </div>
   </div>
 </div>
 </div>
