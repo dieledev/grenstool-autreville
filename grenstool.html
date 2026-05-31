@@ -285,26 +285,6 @@ const eDistLbl=mkEl('text',{
   stroke:'#fff','stroke-width':'6','paint-order':'stroke fill'
 },gText);
 
-// Punt-markers
-const MARKER_CFG={
-  J:{color:'#ff3b30',r:12,stroke:2.5,lbl:true,txt:'Borne 2'},
-  JU:{color:'#ff3b30',r:9,stroke:2,lbl:true,txt:'J'},
-  I:{color:'#ff3b30',r:12,stroke:2.5,lbl:true},
-};
-const ptG={};
-for(const[name,cfg]of Object.entries(MARKER_CFG)){
-  const g=mkEl('g',{},gFront);
-  mkEl('circle',{r:cfg.r,fill:cfg.color,stroke:'#fff','stroke-width':cfg.stroke,'fill-opacity':'0.9'},g);
-  if(cfg.lbl){
-    const t=mkEl('text',{
-      fill:cfg.color,'font-size':'24','font-weight':'700','font-family':'system-ui,sans-serif',
-      'text-anchor':'middle',dy:'-16',stroke:'#0f0f1a','stroke-width':'5','paint-order':'stroke fill'
-    },g);
-    t.textContent=cfg.txt||name;
-  }
-  ptG[name]=g;
-}
-
 // Setline helper
 function setLine(el,a,b){
   el.setAttribute('x1',a.x);el.setAttribute('y1',a.y);
@@ -338,12 +318,6 @@ function render(d){
   // Cessielijn Borne 2→I (vaag) + AB30-ondergrens J→I (prominent)
   setLine(cessieLine,lamToPx(PT.J),lamToPx(PT.I));
   setLine(jiLine,lamToPx(PT.JU),lamToPx(PT.I));
-
-  // Punt-markers
-  for(const name of Object.keys(MARKER_CFG)){
-    const p=lamToPx(PT[name]);
-    ptG[name].setAttribute('transform',`translate(${p.x},${p.y})`);
-  }
 
   // ─── Afstandstellers: hoever is de cessie langs elke lange zijde opgelopen ──
   // Gemeten op de zijlijn zelf, vanaf de AB30-onderhoek (west JU, oost I) tot het
