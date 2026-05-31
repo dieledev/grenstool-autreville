@@ -204,6 +204,8 @@ function findD(targetM2){
 const d240=findD(240);
 const {west:_w240,east:_e240}=getAB30(d240);
 const _dir240=normL(subL(_e240,_w240));
+// Vaste positie teller: hart van de zone tussen 240 m²-lijn en façade
+const _ctrPt={E:(_w240.E+_e240.E+PT.LF.E+PT.GF.E)/4,N:(_w240.N+_e240.N+PT.LF.N+PT.GF.N)/4};
 
 // ─── SVG OPBOUW ────────────────────────────────────────────────────────────
 const NS='http://www.w3.org/2000/svg';
@@ -270,11 +272,12 @@ convLbl.textContent='intersection des limites';
 
 // m²-label in AB30
 const areaLabel=mkEl('text',{
-  fill:'#e413c8','font-size':'52','font-weight':'800',
-  'font-family':'system-ui,sans-serif','text-anchor':'middle',
-  'dominant-baseline':'middle','font-variant-numeric':'tabular-nums',
-  stroke:'#0f0f1a','stroke-width':'6','paint-order':'stroke fill'
+  fill:'#e413c8','font-size':'58','font-weight':'300',
+  'font-family':'"Helvetica Neue",Helvetica,Arial,sans-serif',
+  'text-anchor':'middle','dominant-baseline':'middle',
+  'font-variant-numeric':'tabular-nums','letter-spacing':'-1'
 },gText);
+areaLabel.style.filter='drop-shadow(0 1px 8px rgba(0,0,0,0.65))';
 
 // Afstand-labels langs de lange zijden (wit gehalood voor leesbaarheid op de plattegrond)
 const wDistLbl=mkEl('text',{
@@ -356,11 +359,10 @@ function render(d){
     eMeasure.style.opacity=eLeader.style.opacity=eDistLbl.style.opacity='';
   }else{ eMeasure.style.opacity=eLeader.style.opacity=eDistLbl.style.opacity='0'; }
 
-  // m² label: centroïde van AB30 polygoon
-  const cx=px.reduce((s,p)=>s+p.x,0)/px.length;
-  const cy=px.reduce((s,p)=>s+p.y,0)/px.length;
-  areaLabel.setAttribute('x',cx);
-  areaLabel.setAttribute('y',cy);
+  // m² label: vaste positie boven de 240 m²-lijn
+  const cp=lamToPx(_ctrPt);
+  areaLabel.setAttribute('x',cp.x);
+  areaLabel.setAttribute('y',cp.y);
   const displayArea=Math.min(area,240);
   areaLabel.textContent=displayArea<1?'':displayArea.toFixed(0)+' m²';
 
