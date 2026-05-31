@@ -496,6 +496,10 @@ document.getElementById('btnConv').addEventListener('click',()=>{
 // ─── INIT ──────────────────────────────────────────────────────────────────
 window.addEventListener('load',()=>{
   render(0);
+  // Lock pill width to prevent layout reflow when text toggles near 240 m²
+  const _p=document.getElementById('pill240');
+  _p.style.minWidth=_p.getBoundingClientRect().width+'px';
+  _p.style.textAlign='center';
   // Start: toon AB30-gebied. Wacht tot de SVG echt breedte heeft (mobiel laggt soms).
   const doFit=()=>{
     const r=svg.getBoundingClientRect();
