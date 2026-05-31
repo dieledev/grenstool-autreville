@@ -202,6 +202,8 @@ function findD(targetM2){
   return(lo+hi)/2;
 }
 const d240=findD(240);
+const {west:_w240,east:_e240}=getAB30(d240);
+const _dir240=normL(subL(_e240,_w240));
 
 // ─── SVG OPBOUW ────────────────────────────────────────────────────────────
 const NS='http://www.w3.org/2000/svg';
@@ -243,6 +245,7 @@ const lgLine=mkEl('line',{stroke:'#22c55e','stroke-width':'3','stroke-linecap':'
 
 // Paarse grens
 const purpleLine=mkEl('line',{stroke:'#e413c8','stroke-width':'4.5','stroke-linecap':'round'},gMid);
+const ghost240=mkEl('line',{stroke:'#f59e0b','stroke-width':'8','stroke-linecap':'round',opacity:'0'},gMid);
 
 // ─── AFSTANDSTELLERS langs de lange zijden ───────────────────────────────────
 // Bij het omhoogtrekken van de paarse lijn loopt langs elke zijgrens een maat mee:
@@ -315,6 +318,14 @@ function render(d){
   // Kopse kant referentielijn: werkelijke facade LF→GF (iets verlengd)
   setLine(lgLine,farPx(PT.LF,gevelDir,-20),farPx(PT.GF,gevelDir,20));
 
+  // Ghost lijn: bevroren op 240 m²-positie, zichtbaar zodra slider eroverheen gaat
+  if(area>=239){
+    setLine(ghost240,farPx(_w240,_dir240,-1200),farPx(_e240,_dir240,1200));
+    ghost240.style.opacity='0.9';
+  }else{
+    ghost240.style.opacity='0';
+  }
+
   // Cessielijn Borne 2→I (vaag) + AB30-ondergrens J→I (prominent)
   setLine(cessieLine,lamToPx(PT.J),lamToPx(PT.I));
   setLine(jiLine,lamToPx(PT.JU),lamToPx(PT.I));
@@ -350,16 +361,16 @@ function render(d){
   const cy=px.reduce((s,p)=>s+p.y,0)/px.length;
   areaLabel.setAttribute('x',cx);
   areaLabel.setAttribute('y',cy);
-  areaLabel.textContent=area<1?'':area.toFixed(0)+' m²';
+  const displayArea=Math.min(area,240);
+  areaLabel.textContent=displayArea<1?'':displayArea.toFixed(0)+' m²';
 
   // Panel
-  document.getElementById('bigArea').textContent=area.toLocaleString('fr-FR',{minimumFractionDigits:1,maximumFractionDigits:1});
+  document.getElementById('bigArea').textContent=displayArea.toLocaleString('fr-FR',{minimumFractionDigits:1,maximumFractionDigits:1});
   document.getElementById('vOffset').textContent=d.toFixed(2)+' m';
   document.getElementById('vRest').textContent=(dMax-d).toFixed(2)+' m';
 
-  const diff=area-240;
   const pill=document.getElementById('pill240');
-  if(Math.abs(diff)<2) pill.textContent='✓ ≈ cadastre 240 m²';
+  if(area>=238) pill.textContent='✓ ≈ cadastre 240 m²';
   else pill.textContent=`240 m² à ${d240.toFixed(2)} m de profondeur`;
 }
 
