@@ -1,0 +1,10 @@
+extract/
+unpacked_raw/
+*.pdf
+*.zip
+*.png
+*.webp
+*.jpg
+*.b64
+geometrisch_model.md
+strategische_opties.md
