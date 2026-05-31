@@ -204,7 +204,9 @@ function findD(targetM2){
 const d240=findD(240);
 const {west:_w240,east:_e240}=getAB30(d240);
 const _dir240=normL(subL(_e240,_w240));
-const _ctrPt={E:(_w240.E+_e240.E+PT.LF.E+PT.GF.E)/4,N:(_w240.N+_e240.N+PT.LF.N+PT.GF.N)/4};
+const _bCtr={E:(PT.JU.E+PT.I.E)/2,N:(PT.JU.N+PT.I.N)/2};
+const _tCtr={E:(PT.LF.E+PT.GF.E)/2,N:(PT.LF.N+PT.GF.N)/2};
+const _ctrPt={E:_bCtr.E+0.35*(_tCtr.E-_bCtr.E),N:_bCtr.N+0.35*(_tCtr.N-_bCtr.N)};
 
 // ─── SVG OPBOUW ────────────────────────────────────────────────────────────
 const NS='http://www.w3.org/2000/svg';
