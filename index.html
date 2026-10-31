@@ -381,13 +381,21 @@ function render(d){
 
 // ─── SLIDER ────────────────────────────────────────────────────────────────
 const slider=document.getElementById('slider');
-slider.max=dMax.toFixed(2);
+// step=any zodat een vastgeklikte waarde exact blijft (geen afronding naar 0,01 m)
+const SNAP=0.15;
+slider.step='any';
+slider.max=dMax;
 slider.value='0';
-slider.addEventListener('input',()=>render(parseFloat(slider.value)));
+slider.addEventListener('input',()=>{
+  if(Math.abs(parseFloat(slider.value)-d240)<SNAP) slider.value=d240;
+  render(parseFloat(slider.value));
+});
 
-// 240m² markering op slider
+// 240m² markering op slider. Duimcentrum loopt van THUMB/2 tot breedte−THUMB/2, niet van 0 tot 100%
+const THUMB=16;
+const markPos=f=>`calc(${THUMB/2}px + ${(f*100).toFixed(3)}% - ${(f*THUMB).toFixed(2)}px)`;
 const mark=document.getElementById('mark240');
-mark.style.left=(d240/dMax*100).toFixed(2)+'%';
+mark.style.left=markPos(d240/dMax);
 document.getElementById('pill240').textContent=`240 m² à ${d240.toFixed(2)} m de profondeur`;
 
 // ─── ZOOM & PAN ────────────────────────────────────────────────────────────
